@@ -1,4 +1,4 @@
-import { ConfigService, registerAs } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 
@@ -14,6 +14,6 @@ export default new DataSource({
   username: configService.getOrThrow('MYSQL_USERNAME'),
   password: configService.getOrThrow('MYSQL_PASSWORD'),
   entities: ["dist/**/*.entity{.ts,.js}"],
-  migrations: ["dist/migrations/*{.ts,.js}"],
+  migrations: ["dist/database/migrations/*{.ts,.js}"],
   synchronize: false,
 });

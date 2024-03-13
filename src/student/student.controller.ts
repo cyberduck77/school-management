@@ -6,18 +6,27 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dtos/create-student.dto';
 import { UpdateStudentDto } from './dtos/update-student.dto';
+import { JwtGuard } from 'src/common/guards/jwt.guard';
+import { Request } from 'express';
 
-@Controller('students')
+@Controller('student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @Post()
-  create(@Body() createStudentDto: CreateStudentDto) {
-    return this.studentService.create(createStudentDto);
+  @Post('profile')
+  @UseGuards(JwtGuard)
+  async create(
+    @Req() req: Request,
+    @Body() createProfileDto: CreateStudentDto,
+  ) {
+    const { user } = req;
+    return this.studentService.create(user, createProfileDto);
   }
 
   @Get()
